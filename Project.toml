@@ -1,0 +1,7 @@
+name = "Acoustics"
+uuid = "3b3a8e8f-5643-43ea-bf99-15dd952b2929"
+authors = ["Mark C. Anderson <anderson.mark.az@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
