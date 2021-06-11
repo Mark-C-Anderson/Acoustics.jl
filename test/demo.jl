@@ -18,37 +18,57 @@ using Revise # This package helps Julia recognize when you've made edits to your
              # It should be run at the start of every Julia session
 
 # ---- THIS SECTION IS JUST SIMPLE SETUP, DOES NOT NEED TO BE RUN MORE THAN ONCE ---- #
-using Pkg
+# using Pkg
 
-# Installing a good python plotting backend (Qt5Agg)
-using Conda
-Conda.pip_interop(true)
-Conda.add("matplotlib")
-Conda.pip("install","PyQt5")
+# # Installing a good python plotting backend (Qt5Agg)
+# using Conda
+# Conda.pip_interop(true)
+# Conda.add("matplotlib")
+# Conda.pip("install","PyQt5")
 
-# Setting up python plotting
-ENV["PYTHON"] = "" # Forces Julia to use its own python distribution (independent of any other
-                   # python distribution on your computer)
-ENV["MPLBACKEND"] = "Qt5Agg" # A good plotting backend for matplotlib in python
-Pkg.build("PyCall") # Ensures that your PyCall package is using the updated features
-Pkg.build("PyPlot") # Ensures that your PyPlot package is using the updated features
+# # Setting up python plotting
+# ENV["PYTHON"] = "" # Forces Julia to use its own python distribution (independent of any other
+#                    # python distribution on your computer)
+# ENV["MPLBACKEND"] = "Qt5Agg" # A good plotting backend for matplotlib in python
+# Pkg.build("PyCall") # Ensures that your PyCall package is using the updated features
+# Pkg.build("PyPlot") # Ensures that your PyPlot package is using the updated features
 
 # ---- END OF SETUP SECTION. IT WAS INCLUDED HERE JUST TO HELP NEW USERS. ---- #
 
 # ---- NOW WE CAN GET TO THE ACTUAL ACOUSTICS WORK ---- #
 
 # Using the necessary packages for this demo.
-import Plots; Plots.PyPlotBackend()# For plotting
+import PyPlot: figure, clf
+using Plots; pyplot() # For plotting
 import Acoustics: binfileload # Getting access to the binfileload function
 
 #----- Loading in data
-#x = binfileload("/Users/markanderson/Desktop",11,2)
-x = rand(100)
+figure()
+clf()
+x = binfileload("/Users/markanderson/Desktop",11,2)
 fs = 51.2e3;
 dt = 1/fs;
 t = 0:dt:length(x)*dt-dt;
-Plots.plot(t,x,
-            label = "Waveform",
-            title = "Falcon 9 Landing",
-            xlabel = "Time (s)",
-            ylabel = "Pressure (Pa)")
+p = Plots.plot(t,x,
+        label = "Waveform",
+        title = "Falcon 9 Landing",
+        xlabel = "Time (s)",
+        ylabel = "Pressure (Pa)")
+#display(p)
+
+figure()
+clf()
+x = binfileload("/Users/markanderson/Desktop",6,1)
+fs = 51.2e3;
+dt = 1/fs;
+t = 0:dt:length(x)*dt-dt;
+p = Plots.plot(t,x,
+    label = "Waveform",
+    title = "Falcon 9 Launch",
+    xlabel = "Time (s)",
+    ylabel = "Pressure (Pa)")
+#display(p)
+
+#----- Performing spectral analysis
+
+Gxx, f, OASPL = autospec(x,fs)
