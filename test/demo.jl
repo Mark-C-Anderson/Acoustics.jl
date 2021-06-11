@@ -14,14 +14,31 @@
 #
 #    And there you go! Just use that include() command each time you want to run the code!
 
-# Using the necessary packages for this demo
-using Revise # This package helps Julia recognize when you've made edits to your code
-using Plots # For plotting
-import Acoustics: binfileload # Getting access to the binfileload function
+using Revise # This package helps Julia recognize when you've made edits to your code.
+             # It should be run at the start of every Julia session
 
-# Choosing a nice plotting backend
-plotlyjs() # This makes plots that are maneuverable, similar to MATLAB
-# Plots.PlotlyJSBackend()
+# ---- THIS SECTION IS JUST SIMPLE SETUP, DOES NOT NEED TO BE RUN MORE THAN ONCE ---- #
+using Pkg
+
+# Installing a good python plotting backend (Qt5Agg)
+using Conda
+Conda.pip_interop(true)
+Conda.pip("install","PyQt5")
+
+# Setting up python plotting
+ENV["PYTHON"] = "" # Forces Julia to use its own python distribution (independent of any other
+                   # python distribution on your computer)
+ENV["MPLBACKEND"] = "Qt5Agg" # A good plotting backend for matplotlib in python
+Pkg.build("PyCall") # Ensures that your PyCall package is using the updated features
+Pkg.build("PyPlot") # Ensures that your PyPlot package is using the updated features
+
+# ---- END OF SETUP SECTION. IT WAS INCLUDED HERE JUST TO HELP NEW USERS. ---- #
+
+# ---- NOW WE CAN GET TO THE ACTUAL ACOUSTICS WORK ---- #
+
+# Using the necessary packages for this demo.
+using Plots; pyplot() # For plotting
+import Acoustics: binfileload # Getting access to the binfileload function
 
 #----- Loading in data
 x = binfileload("/Users/markanderson/Desktop",11,2)
@@ -33,4 +50,3 @@ plot(t,x,
     title = "Falcon 9 Landing",
     xlabel = "Time (s)",
     ylabel = "Pressure (Pa)")
-gui()
