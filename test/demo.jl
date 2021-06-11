@@ -39,8 +39,8 @@ using Revise # This package helps Julia recognize when you've made edits to your
 
 # Using the necessary packages for this demo.
 import PyPlot: figure, clf
-using Plots; pyplot() # For plotting
-import Acoustics: binfileload # Getting access to the binfileload function
+using Plots; plotly() # For plotting
+import Acoustics: binfileload, autospec # Getting access to the binfileload function
 
 #----- Loading in data
 figure()
@@ -72,3 +72,10 @@ p = Plots.plot(t,x,
 #----- Performing spectral analysis
 
 Gxx, f, OASPL = autospec(x,fs)
+
+spectrum = 10*log10.(Gxx./(20e-6)^2)
+
+figure()
+clf()
+p = Plots.plot(f,spectrum,xaxis=:log,xlimit = (1,20e3))
+display(p)
