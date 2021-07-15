@@ -21,6 +21,7 @@ using Revise # This package helps Julia recognize when you've made edits to your
 # using Pkg
 
 # # Installing a good python plotting backend (Qt5Agg)
+# Pkg.build("Conda")
 # using Conda
 # Conda.pip_interop(true)
 # Conda.add("matplotlib")
@@ -39,13 +40,13 @@ using Revise # This package helps Julia recognize when you've made edits to your
 
 # Using the necessary packages for this demo.
 import PyPlot: figure, clf
-using Plots; plotly() # For plotting
+using Plots; pyplot() # For plotting
 import Acoustics: binfileload, autospec # Getting access to the binfileload function
 
 #----- Loading in data
 figure()
 clf()
-x = binfileload("/Users/markanderson/Desktop",11,2)
+x = binfileload("/Users/markanderson/Desktop/Acoustics.jl/test",11,2)
 fs = 51.2e3;
 dt = 1/fs;
 t = 0:dt:length(x)*dt-dt;
@@ -58,7 +59,7 @@ p = Plots.plot(t,x,
 
 figure()
 clf()
-x = binfileload("/Users/markanderson/Desktop",6,1)
+x = binfileload("/Users/markanderson/Desktop/Acoustics.jl/test",6,1)
 fs = 51.2e3;
 dt = 1/fs;
 t = 0:dt:length(x)*dt-dt;
